@@ -161,13 +161,13 @@ public class MapFragment extends Fragment{
     }
 
     private void setMainActivityDefaults() {
-        locationImageButton = (ImageButton) rootView.findViewById(R.id.menu_bar_btn_location);
-        settingsImageButton = (ImageButton) rootView.findViewById(R.id.menu_bar_btn_settings);
-        scheduleImageButton = (ImageButton) rootView.findViewById(R.id.menu_bar_btn_schedule);
-        pronaucementImageButton = (Button) rootView.findViewById(R.id.home_btn_report_bus_issues);
-        searchButton = (Button) rootView.findViewById(R.id.home_btn_search);
-
-        pronaucementLinearLayout = (LinearLayout) rootView.findViewById(R.id.home_layout_report_bus_issue);
+//        locationImageButton = (ImageButton) rootView.findViewById(R.id.menu_bar_btn_location);
+//        settingsImageButton = (ImageButton) rootView.findViewById(R.id.menu_bar_btn_settings);
+//        scheduleImageButton = (ImageButton) rootView.findViewById(R.id.menu_bar_btn_schedule);
+//        pronaucementImageButton = (Button) rootView.findViewById(R.id.home_btn_report_bus_issues);
+//        searchButton = (Button) rootView.findViewById(R.id.home_btn_search);
+//
+//        pronaucementLinearLayout = (LinearLayout) rootView.findViewById(R.id.home_layout_report_bus_issue);
         loadingLinearLayout = (LinearLayout) rootView.findViewById(R.id.loading_template);
         baloonTipLinearLayout = (LinearLayout) rootView.findViewById(R.id.home_balloon_tip);
 
@@ -204,23 +204,23 @@ public class MapFragment extends Fragment{
     }
 
     private void setDefaultClickListener() {
-        locationImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (utils.checkGPS(getActivity()))
-                    mapManagerService.drawUserLocation();
-                else
-                    utils.buildAlertMessageNoGps(getActivity());
-            }
-        });
-
-        settingsImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                callFragment(1, null);
-            }
-        });
-
+//        locationImageButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (utils.checkGPS(getActivity()))
+//                    mapManagerService.drawUserLocation();
+//                else
+//                    utils.buildAlertMessageNoGps(getActivity());
+//            }
+//        });
+//
+//        settingsImageButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                callFragment(1, null);
+//            }
+//        });
+//
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -230,33 +230,33 @@ public class MapFragment extends Fragment{
                     searchAutoCompleteTextView.setVisibility(View.VISIBLE);
             }
         });
-
-
-
-        scheduleImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                callFragment(2, null);
-                utils.hideSoftKeyboard(getActivity());
-            }
-        });
-
-
-        baloonTipLinearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                baloonTipLinearLayout.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        this.changeVisibility();
-
-        pronaucementImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                startActivity(new Intent(getActivity(), ReportBusIssueActivity.class));
-            }
-        });
+//
+//
+//
+//        scheduleImageButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                callFragment(2, null);
+//                utils.hideSoftKeyboard(getActivity());
+//            }
+//        });
+//
+//
+//        baloonTipLinearLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                baloonTipLinearLayout.setVisibility(View.INVISIBLE);
+//            }
+//        });
+//
+//        this.changeVisibility();
+//
+//        pronaucementImageButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                startActivity(new Intent(getActivity(), ReportBusIssueActivity.class));
+//            }
+//        });
     }
 
     private void toggleLoadingScreen(boolean toggle){
@@ -270,31 +270,31 @@ public class MapFragment extends Fragment{
     }
 
     private void callFragment(int fragment, Bundle bundle){
-        switch (fragment){
-            case 0:
-                getFragmentManager().beginTransaction()
-//                        .add(R.id.fragment_container, ((android.support.v4.app.Fragment) ((bundle == null) ? new LoginFragment() : new LoginFragment().setArguments(bundle))))
-                        .add(R.id.fragment_container, new LoginFragment())
-                        .addToBackStack(null)
-                        .commit();
-                break;
-            case 1:
-                getFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.abc_slide_in_top, R.anim.abc_slide_out_top)
-                        .add(R.id.fragment_container, new ConfigFragment())
-                        .addToBackStack(null)
-                        .commit();
-                break;
-            case 2:
-                getFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom)
-                        .add(R.id.fragment_container, new ScheduleFragment())
-                        .addToBackStack(null)
-                        .commit();
-                break;
-            default:
-                break;
-        }
+//        switch (fragment){
+//            case 0:
+//                getFragmentManager().beginTransaction()
+////                        .add(R.id.fragment_container, ((android.support.v4.app.Fragment) ((bundle == null) ? new LoginFragment() : new LoginFragment().setArguments(bundle))))
+//                        .add(R.id.fragment_container, new LoginFragment())
+//                        .addToBackStack(null)
+//                        .commit();
+//                break;
+//            case 1:
+//                getFragmentManager().beginTransaction()
+//                        .setCustomAnimations(R.anim.abc_slide_in_top, R.anim.abc_slide_out_top)
+//                        .add(R.id.fragment_container, new ConfigFragment())
+//                        .addToBackStack(null)
+//                        .commit();
+//                break;
+//            case 2:
+//                getFragmentManager().beginTransaction()
+//                        .setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom)
+//                        .add(R.id.fragment_container, new ScheduleFragment())
+//                        .addToBackStack(null)
+//                        .commit();
+//                break;
+//            default:
+//                break;
+//        }
     }
 
     public void changeDistance(double d){

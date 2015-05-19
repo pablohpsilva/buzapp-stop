@@ -55,26 +55,28 @@
             </ListView>
         </LinearLayout>
 
-        <LinearLayout android:id="@+id/fullscreen_home_content_controls"
-                      android:layout_width="match_parent"
-                      android:layout_height="55dp"
-                      android:layout_gravity="bottom|center_horizontal"
-                      android:orientation="horizontal"
-                      tools:ignore="UselessParent">
+        <!--<LinearLayout android:id="@+id/fullscreen_home_content_controls"-->
+                      <!--android:layout_width="match_parent"-->
+                      <!--android:layout_height="55dp"-->
+                      <!--android:layout_gravity="bottom|center_horizontal"-->
+                      <!--android:orientation="horizontal"-->
+                      <!--tools:ignore="UselessParent">-->
 
-            <include layout="@layout/linear_menu_bar"/>
+            <!--<include layout="@layout/linear_menu_bar"/>-->
 
 
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
-        <LinearLayout android:id="@+id/fullscreen_home_content_controls2"
-                      android:layout_width="50dp"
-                      android:layout_height="50dp"
-                      android:layout_marginTop="15dp"
-                      android:layout_marginRight="5dp"
-                      android:layout_gravity="right|top"
-                      android:orientation="horizontal"
-                      tools:ignore="UselessParent">
+        <LinearLayout
+                android:id="@+id/fullscreen_home_content_controls2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="5dp"
+                android:layout_gravity="right|top"
+                android:orientation="horizontal"
+                tools:ignore="UselessParent"
+                android:visibility="visible">
             <Button
                     android:id="@+id/home_btn_search"
                     android:layout_width="wrap_content"
@@ -86,13 +88,13 @@
 
         </LinearLayout>
 
-        <LinearLayout android:id="@+id/home_balloon_tip"
-                      android:layout_width="match_parent"
-                      android:layout_height="match_parent"
+        <LinearLayout
+                android:id="@+id/home_balloon_tip"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible">
 
-                >
-            <include
-                    layout="@layout/balloon_tip"/>
+            <include layout="@layout/balloon_tip"/>
 
         </LinearLayout>
 

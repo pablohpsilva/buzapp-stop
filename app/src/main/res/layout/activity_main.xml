@@ -9,10 +9,10 @@
         tools:context="${relativePackage}.${activityClass}">
 
     <fragment
-            android:name="aloeio.buzapp.app.Fragments.LoginFragment"
+            android:name="aloeio.buzapp_stop.app.Fragments.MapFragment"
             android:id="@+id/main_fragment_map"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            tools:layout="@layout/fragment_login"/>
+            tools:layout="@layout/fragment_map"/>
 
 </FrameLayout>
