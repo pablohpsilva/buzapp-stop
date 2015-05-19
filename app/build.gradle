@@ -17,7 +17,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "aloeio.buzapp.app"
+        applicationId "aloeio.buzapp_stop.app"
         minSdkVersion 9
         targetSdkVersion 21
         versionCode 1
@@ -30,7 +30,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
