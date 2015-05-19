@@ -76,7 +76,7 @@
                 android:layout_gravity="right|top"
                 android:orientation="horizontal"
                 tools:ignore="UselessParent"
-                android:visibility="visible">
+                android:visibility="invisible">
             <Button
                     android:id="@+id/home_btn_search"
                     android:layout_width="wrap_content"
