@@ -52,7 +52,8 @@ public class NearAreaService {
     }
 
     public double getDistanceBetween(Location user, Location point) throws NullPointerException{
-        return this.getDistanceHelper(user.getLatitude(), user.getLongitude(), point.getLatitude(), point.getLongitude());
+//        return this.getDistanceHelper(user.getLatitude(), user.getLongitude(), point.getLatitude(), point.getLongitude());
+        return point.distanceTo(user);
     }
 
     public GeoPoint nearestGeoPoint(GeoPoint user, ArrayList<GeoPoint> points){
