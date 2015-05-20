@@ -1,5 +1,6 @@
 package aloeio.buzapp_stop.app.Utils.UI;
 
+import aloeio.buzapp_stop.app.R;
 import android.app.Dialog;
 import android.content.Context;
 import android.text.Html;
