@@ -1,6 +1,8 @@
 package aloeio.buzapp_stop.app.Models.Ads;
 
+import aloeio.buzapp_stop.app.Interfaces.IBackendJSON;
 import android.media.Image;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Date;
@@ -8,7 +10,7 @@ import java.sql.Date;
 /**
  * Created by pablohenrique on 5/22/15.
  */
-public abstract class AAd implements Cloneable {
+public abstract class AAd implements Cloneable, IBackendJSON {
     private Date expirationDate;
     private Image image;
     private int expirationCounter = -1;
@@ -159,6 +161,16 @@ public abstract class AAd implements Cloneable {
 
     public int getDurationInSeconds() {
         return durationInSeconds;
+    }
+
+    public JSONObject toJSON() throws JSONException{
+        this.jsonRepresentation = new JSONObject();
+
+        this.jsonRepresentation.accumulate("identifier", this.getIdentifier());
+        this.jsonRepresentation.accumulate("timesShownCounter",this.getTimesShownCounter());
+        this.jsonRepresentation.accumulate("expired", this.canShow());
+
+        return this.jsonRepresentation;
     }
 
     private void setDurationInSeconds(int durationInSeconds) {
