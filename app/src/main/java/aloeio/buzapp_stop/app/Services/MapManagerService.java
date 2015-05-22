@@ -10,7 +10,6 @@ import aloeio.buzapp_stop.app.Services.Overrides.MyMarkerInfoWindow;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import aloeio.buzapp_stop.app.R;
-import android.support.v4.app.Fragment;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +42,7 @@ public class MapManagerService {
     private ExceptionService exceptionControllerSingleton = ExceptionService.getInstance();
     private MapView mapView;
     private MyLocationService myLocationService;
-    private NewBusService newBusService;
+    private BusService busService;
     private Polyline busRoadOverlay = null;
     private Polyline userRoadOverlay = null;
     private Road userRoadObject = null;
@@ -356,8 +355,8 @@ public class MapManagerService {
             this.busCar = new BusCar();
         if(this.busMarker == null)
             createBusMarker();
-        if(this.newBusService == null)
-            newBusService = new NewBusService();
+        if(this.busService == null)
+            busService = new BusService();
     }
 
     private void createStopsMarker(){

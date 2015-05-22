@@ -4,7 +4,6 @@ import aloeio.buzapp_stop.app.Fragments.MapFragment;
 import aloeio.buzapp_stop.app.Models.Bus.BusCar;
 import aloeio.buzapp_stop.app.Services.Overrides.MyMarker;
 import aloeio.buzapp_stop.app.Services.Overrides.MyMarkerInfoWindow;
-import android.support.v4.app.Fragment;
 import android.graphics.drawable.Drawable;
 import aloeio.buzapp_stop.app.R;
 import org.json.JSONArray;
@@ -19,13 +18,13 @@ import java.util.ArrayList;
  * Created by pablohenrique on 5/8/15.
  */
 public class BusManagerService {
-    private ArrayList<NewBusService> newBusServiceArrayList;
+    private ArrayList<BusService> busServiceArrayList;
     private ExceptionService exceptionControllerSingleton = ExceptionService.getInstance();
     private MyMarker busMarker;
     private MapFragment activity;
     private MapView mapView;
     private BusCar busCar;
-    private NewBusService newBusService;
+    private BusService busService;
 
     public BusManagerService(final MapFragment fragment, MyMarkerInfoWindow infoWindow){
         this.activity = fragment;
@@ -37,8 +36,8 @@ public class BusManagerService {
 
     public void startBus(JSONArray json){
         try {
-            if(this.newBusServiceArrayList == null)
-                this.newBusServiceArrayList = new ArrayList<NewBusService>();
+            if(this.busServiceArrayList == null)
+                this.busServiceArrayList = new ArrayList<BusService>();
             for (int i = 0; i < json.length(); i++)
                 this.drawBuses(json.getJSONObject(i));
         } catch (JSONException exception){
@@ -51,75 +50,75 @@ public class BusManagerService {
     }
 
     public void startBus(String url){
-        if(this.newBusServiceArrayList == null)
-            this.newBusServiceArrayList = new ArrayList<NewBusService>();
+        if(this.busServiceArrayList == null)
+            this.busServiceArrayList = new ArrayList<BusService>();
         drawSingleBus(url);
     }
 
     public void stopServices(){
-        if(this.newBusServiceArrayList.size() > 0)
-            for(NewBusService service : this.newBusServiceArrayList)
+        if(this.busServiceArrayList.size() > 0)
+            for(BusService service : this.busServiceArrayList)
                 service.stopBusActivity();
     }
 
     public void resumeServices(){
-        if(this.newBusServiceArrayList.size() > 0)
-            for(NewBusService service : this.newBusServiceArrayList)
+        if(this.busServiceArrayList.size() > 0)
+            for(BusService service : this.busServiceArrayList)
                 service.resumeBusTracking();
     }
 
     public void stopRemoveBuses(){
-        for(NewBusService service : this.newBusServiceArrayList){
+        for(BusService service : this.busServiceArrayList){
             this.mapView.getOverlays().remove(service.getBusCar().getMarker());
             service.stopBusActivity();
         }
-        this.newBusServiceArrayList.clear();
+        this.busServiceArrayList.clear();
         System.gc();
     }
 
-    public void stopRemoveBus(NewBusService service){
-        int index = this.newBusServiceArrayList.indexOf(service);
-        this.mapView.getOverlays().remove(this.newBusServiceArrayList.get(index).getBusCar().getMarker());
-        this.newBusServiceArrayList.remove(this.newBusServiceArrayList.get(index));
+    public void stopRemoveBus(BusService service){
+        int index = this.busServiceArrayList.indexOf(service);
+        this.mapView.getOverlays().remove(this.busServiceArrayList.get(index).getBusCar().getMarker());
+        this.busServiceArrayList.remove(this.busServiceArrayList.get(index));
     }
 
     public boolean inUse(){
-        if(this.newBusServiceArrayList == null)
+        if(this.busServiceArrayList == null)
             return false;
         else
-            return (this.newBusServiceArrayList.size() > 0);
+            return (this.busServiceArrayList.size() > 0);
     }
 
     private void drawBuses(JSONObject json) throws JSONException, CloneNotSupportedException{
         MyMarker cloneMarker = this.busMarker.copy();
         BusCar cloneBus = this.busCar.copy();
-        NewBusService cloneNewBusService = this.newBusService.copy();
+        BusService cloneBusService = this.busService.copy();
 
         cloneBus.setObjectData(json, cloneMarker);
-        cloneNewBusService.setObjectData(cloneBus, cloneBus.getUrl());
+        cloneBusService.setObjectData(cloneBus, cloneBus.getUrl());
 
         mapView.getOverlays().add(cloneBus.getMarker());
         mapView.postInvalidate();
 
-        cloneNewBusService.startBusTracking(mapView);
-        this.newBusServiceArrayList.add(cloneNewBusService);
+        cloneBusService.startBusTracking(mapView);
+        this.busServiceArrayList.add(cloneBusService);
     }
 
     private void drawSingleBus(String url){
         try {
             MyMarker cloneMarker = this.busMarker.copy();
             BusCar cloneBus = this.busCar.copy();
-            NewBusService cloneNewBusService = this.newBusService.copy();
+            BusService cloneBusService = this.busService.copy();
 
             cloneBus.setMarker(cloneMarker);
-            cloneNewBusService.setObjectData(cloneBus, url);
+            cloneBusService.setObjectData(cloneBus, url);
 
             mapView.getOverlays().add(cloneMarker);
             mapView.postInvalidate();
 
-            cloneNewBusService.startBusTracking(mapView);
+            cloneBusService.startBusTracking(mapView);
 
-            this.newBusServiceArrayList.add(cloneNewBusService);
+            this.busServiceArrayList.add(cloneBusService);
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
@@ -145,7 +144,7 @@ public class BusManagerService {
     }
 
     private void createDefaultBusService(){
-        if(this.newBusService == null)
-            this.newBusService = new NewBusService();
+        if(this.busService == null)
+            this.busService = new BusService();
     }
 }
