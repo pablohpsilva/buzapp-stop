@@ -1,7 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="320dp"
-             android:layout_height="60dp"
+             android:layout_width="500dp"
+             android:layout_height="80dp"
              android:background="@color/black_overlay"
              android:layout_gravity="bottom|center_horizontal"
              tools:context="aloeio.buzapp.app.Fragments.BannerAdsFragment">
