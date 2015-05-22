@@ -10,7 +10,6 @@ import aloeio.buzapp_stop.app.Services.Overrides.MyMarkerInfoWindow;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import aloeio.buzapp_stop.app.R;
-import android.support.v4.app.Fragment;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
