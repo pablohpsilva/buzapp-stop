@@ -11,8 +11,152 @@
     <fragment
             android:name="aloeio.buzapp_stop.app.Fragments.MapFragment"
             android:id="@+id/main_fragment_map"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             tools:layout="@layout/fragment_map"/>
+
+        <LinearLayout android:id="@+id/map_interstitial_ads"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center|center_vertical"
+                      tools:ignore="UselessParent">
+
+                <include layout="@layout/fragment_ads"/>
+
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/map_banner_ads"
+                      android:layout_width="320dp"
+                      android:layout_height="60dp"
+                      android:layout_gravity="bottom|center_horizontal"
+                      android:orientation="horizontal"
+                      tools:ignore="UselessParent">
+
+                <include layout="@layout/fragment_banner_ads"/>
+
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/map_banner_ads"
+                      android:layout_width="340dp"
+                      android:layout_height="68dp"
+                      android:layout_gravity="top|right|center_horizontal"
+                      android:orientation="horizontal"
+                      android:background="@color/black_overlay"
+                      tools:ignore="UselessParent">
+
+                <GridLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent">
+
+                        <Button
+                                android:layout_width="50dp"
+                                android:layout_height="20dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="5dp"
+                                android:shadowRadius="0"
+                                android:shadowDx="0"
+                                android:shadowDy="0"
+                                android:background="@color/light_blue"
+                                android:layout_row="1"
+                                android:layout_column="1"
+                                />
+
+                        <TextView
+                                android:id="@+id/main_txt_blue_route"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="T129"
+                                android:textSize="20sp"
+                                android:layout_row="1"
+                                android:layout_column="2"/>
+
+                        <Button
+                                android:layout_width="50dp"
+                                android:layout_height="20dp"
+                                android:shadowRadius="0"
+                                android:shadowDx="0"
+                                android:shadowDy="0"
+                                android:layout_marginBottom="5dp"
+                                android:layout_marginLeft="5dp"
+                                android:background="@color/happy_green"
+                                android:layout_row="2"
+                                android:layout_column="1"
+                                />
+
+                        <TextView
+                                android:id="@+id/main_txt_green_route"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:layout_marginLeft="10dp"
+                                android:text="T129"
+                                android:textSize="20sp"
+                                android:layout_row="2"
+                                android:layout_column="2"/>
+
+                        <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="20dp"
+                                android:src="@mipmap/ic_action_alarms"
+                                android:layout_row="1"
+                                android:layout_column="3"/>
+
+                        <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-6dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="20dp"
+                                android:src="@mipmap/ic_action_alarms"
+                                android:layout_row="2"
+                                android:layout_column="3"/>
+
+                        <TextView
+                                android:id="@+id/main_txt_blue_route_time_left"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:layout_marginTop="10dp"
+                                android:text="12 min"
+                                android:textSize="20sp"
+                                android:layout_row="1"
+                                android:layout_column="4"/>
+
+                        <TextView
+                                android:id="@+id/main_txt_green_route_time_left"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:text="13 min"
+                                android:textSize="20sp"
+                                android:layout_row="2"
+                                android:layout_column="4"/>
+
+                        <LinearLayout
+                                      android:layout_width="68dp"
+                                      android:layout_height="68dp"
+                                      android:layout_gravity="top|right|center_horizontal"
+                                      android:orientation="horizontal"
+                                      android:layout_marginTop="-33dp"
+                                      tools:ignore="UselessParent">
+                                <ImageView
+                                        android:id="@+id/main_img_buzapp_corner_right"
+                                        android:layout_width="65dp"
+                                        android:layout_height="65dp"
+                                        android:src="@mipmap/buzapp_logo_1k"
+                                        android:layout_marginLeft="0dp"
+                                        android:layout_marginTop="-2dp"
+                                        android:layout_row="1"
+                                        android:layout_column="5"/>
+                        </LinearLayout>
+                </GridLayout>
+
+        </LinearLayout>
 
 </FrameLayout>

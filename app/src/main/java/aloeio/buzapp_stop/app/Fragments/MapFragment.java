@@ -165,7 +165,7 @@ public class MapFragment extends Fragment{
 //        settingsImageButton = (ImageButton) rootView.findViewById(R.id.menu_bar_btn_settings);
 //        scheduleImageButton = (ImageButton) rootView.findViewById(R.id.menu_bar_btn_schedule);
 //        pronaucementImageButton = (Button) rootView.findViewById(R.id.home_btn_report_bus_issues);
-//        searchButton = (Button) rootView.findViewById(R.id.home_btn_search);
+        searchButton = (Button) rootView.findViewById(R.id.home_btn_search);
 //
 //        pronaucementLinearLayout = (LinearLayout) rootView.findViewById(R.id.home_layout_report_bus_issue);
         loadingLinearLayout = (LinearLayout) rootView.findViewById(R.id.loading_template);
@@ -230,6 +230,7 @@ public class MapFragment extends Fragment{
                     searchAutoCompleteTextView.setVisibility(View.VISIBLE);
             }
         });
+        baloonTipLinearLayout.setVisibility(View.GONE);
 //
 //
 //
