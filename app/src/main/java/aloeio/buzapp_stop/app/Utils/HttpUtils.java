@@ -1,11 +1,13 @@
 package aloeio.buzapp_stop.app.Utils;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
@@ -18,6 +20,8 @@ import java.io.*;
 import java.net.SocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Created by pablohenrique on 2/18/15.
@@ -38,6 +42,8 @@ public class HttpUtils {
         HttpGet request = new HttpGet();
         HttpClient client = new DefaultHttpClient(this.createHttpParams());
 
+        request.addHeader("Accept-Encoding", "gzip");
+
         request.setURI(new URI(url));
         response = client.execute(request);
 
@@ -48,22 +54,51 @@ public class HttpUtils {
         HttpPost request = new HttpPost(url);
         HttpClient client = new DefaultHttpClient(this.createHttpParams());
 
-        request.setEntity(new StringEntity(json.toString().replaceAll("\"","'"), CODEPAGE));
+        request.setEntity(new StringEntity(json.toString().replaceAll("\"", "'"), CODEPAGE));
         response = client.execute(request);
 
-        if(response.getStatusLine().getStatusCode() == 200)
-            return true;
-        else
-            return false;
+        return (response.getStatusLine().getStatusCode() == 200);
     }
 
-    public static String convertStreamToString(InputStream inputStream) throws IOException {
+    public String getGZippedRequest(String url) throws HttpException, SocketException, URISyntaxException, ClientProtocolException, IOException{
+        HttpGet request = new HttpGet(url);
+        HttpClient client = new DefaultHttpClient(this.createHttpParams());
+
+        request.addHeader("Accept-Encoding", "gzip");
+//        request.setURI(new URI(url));
+
+        response = client.execute(request);
+        HttpEntity entity = response.getEntity();
+        InputStream instream = entity.getContent();
+        String result = "";
+
+        if (entity.getContentEncoding() != null && "gzip".equalsIgnoreCase(entity.getContentEncoding().getValue())){
+            result = uncompressInputStream(instream);
+        } else {
+            result = convertStreamToString(instream);
+        }
+        return result;
+    }
+
+    public boolean postGZippedRequest(String url, JSONObject json) throws SocketException, UnsupportedEncodingException, JSONException, IOException {
+        HttpPost request = new HttpPost(url);
+        HttpClient client = new DefaultHttpClient(this.createHttpParams());
+
+        request.addHeader("Content-Encoding", "gzip");
+        request.setEntity( new ByteArrayEntity(compressJson(json)) );
+
+        response = client.execute(request);
+
+        return (response.getStatusLine().getStatusCode() == 200);
+    }
+
+    private String convertStreamToString(InputStream inputStream) throws IOException {
         if (inputStream != null) {
             Writer writer = new StringWriter();
 
             char[] buffer = new char[1024];
             try {
-                Reader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"),1024);
+                Reader reader = new BufferedReader(new InputStreamReader(inputStream, CODEPAGE),1024);
                 int n;
                 while ((n = reader.read(buffer)) != -1) {
                     writer.write(buffer, 0, n);
@@ -75,6 +110,64 @@ public class HttpUtils {
         } else {
             return "";
         }
+    }
+
+    private byte[] compressJson(JSONObject json) throws IOException, JSONException {
+        ByteArrayOutputStream baos = null;
+        GZIPOutputStream gzos = null;
+        byte[] jsonGZippedBytes;
+        try {
+            baos = new ByteArrayOutputStream();
+            gzos = new GZIPOutputStream(baos);
+            gzos.write(json.toString().getBytes(CODEPAGE));
+            jsonGZippedBytes = baos.toByteArray();
+        } finally {
+            if(gzos != null)
+                gzos.close();
+            if(baos != null)
+                baos.close();
+        }
+        return jsonGZippedBytes;
+    }
+
+    private String uncompressInputStream(InputStream inputStream) throws IOException {
+        StringBuilder value = new StringBuilder();
+
+        GZIPInputStream gzipIn = null;
+        InputStreamReader inputReader = null;
+        BufferedReader reader = null;
+
+        try {
+            gzipIn = new GZIPInputStream(inputStream);
+            inputReader = new InputStreamReader(gzipIn, CODEPAGE);
+            reader = new BufferedReader(inputReader);
+
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                value.append(line);
+            }
+        } finally {
+            try {
+                if (gzipIn != null) {
+                    gzipIn.close();
+                }
+
+                if (inputReader != null) {
+                    inputReader.close();
+                }
+
+                if (reader != null) {
+                    reader.close();
+                }
+
+            } catch (IOException io) {
+
+                io.printStackTrace();
+            }
+
+        }
+
+        return value.toString();
     }
 
 

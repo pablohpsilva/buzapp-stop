@@ -1,6 +1,7 @@
 package aloeio.buzapp_stop.app.Models.Report;
 
 import aloeio.buzapp_stop.app.Interfaces.IBackendJSON;
+import aloeio.buzapp_stop.app.Models.Ads.AAd;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,10 +13,15 @@ import java.util.ArrayList;
  */
 public class ReportAds implements IBackendJSON {
 
-    private ArrayList<Object> adsArrayList;
+    private ArrayList<AAd> adsArrayList;
+    private String busStopIdentifier;
 
-    public ReportAds(ArrayList<Object> adsArrayList){
+    public ReportAds(ArrayList<AAd> adsArrayList){
+        this(adsArrayList, "");
+    }
+    public ReportAds(ArrayList<AAd> adsArrayList, String busStopIdentifier){
         this.adsArrayList = adsArrayList;
+        this.busStopIdentifier = busStopIdentifier;
     }
 
     public String toJSONString() throws JSONException {
@@ -24,11 +30,17 @@ public class ReportAds implements IBackendJSON {
 
     @Override
     public JSONObject toJSON() throws JSONException{
-        JSONObject json = new JSONObject();
-        JSONArray array = new JSONArray();
-        for(Object object : adsArrayList)
-            array.put(object);
-        json.accumulate("list", array);
-        return json;
+        if(!this.adsArrayList.isEmpty()) {
+            JSONObject json = new JSONObject();
+            JSONArray array = new JSONArray();
+            for (AAd object : adsArrayList)
+                array.put(object.toJSON());
+
+            if (!this.busStopIdentifier.equals(""))
+                json.accumulate("id", this.busStopIdentifier);
+            json.accumulate("list", array);
+            return json;
+        }
+        return null;
     }
 }
