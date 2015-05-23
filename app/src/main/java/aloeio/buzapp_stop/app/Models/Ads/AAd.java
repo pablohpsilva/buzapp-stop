@@ -142,7 +142,7 @@ public abstract class AAd implements Cloneable, IBackendJSON {
 
     //TODO Date verification.
     public boolean canShow(){
-        return getExpirationCounter() <= getTimesShownCounter();
+        return getTimesShownCounter() < getExpirationCounter();
     }
 
     // Count how many times an ad was shown.
@@ -167,7 +167,7 @@ public abstract class AAd implements Cloneable, IBackendJSON {
         this.jsonRepresentation = new JSONObject();
 
         this.jsonRepresentation.accumulate("identifier", this.getIdentifier());
-        this.jsonRepresentation.accumulate("timesShownCounter",this.getTimesShownCounter());
+        this.jsonRepresentation.accumulate("timesShownCounter", this.getTimesShownCounter());
         this.jsonRepresentation.accumulate("expired", this.canShow());
 
         return this.jsonRepresentation;

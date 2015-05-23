@@ -16,7 +16,7 @@ import java.util.TimerTask;
 /**
  * Created by pablohenrique on 4/16/15.
  */
-public class NewBusService implements Cloneable{
+public class BusService implements Cloneable{
     private HttpUtils http = null;
     private Timer busTrackingTimer = null;
     private Timer busEasingTimer = null;
@@ -40,14 +40,14 @@ public class NewBusService implements Cloneable{
      * Class constructos
      */
 
-    public NewBusService(){}
+    public BusService(){}
 
     /**
      * The BusCar is an instance a.k.a. new BusCar()
      *              WITH
      * The marker setted
      */
-    public NewBusService(BusCar car, String URL){
+    public BusService(BusCar car, String URL){
         setObjectData(car, URL);
     }
 
@@ -88,19 +88,19 @@ public class NewBusService implements Cloneable{
                         System.gc();
 
                     } catch (JSONException e) {
-                        exceptionControllerSingleton.catchException(NewBusService.class, e, "bad backend");
+                        exceptionControllerSingleton.catchException(BusService.class, e, "bad backend");
                     }
                     catch (HttpException e){
-                        exceptionControllerSingleton.catchException(NewBusService.class, e, "bad backend");
+                        exceptionControllerSingleton.catchException(BusService.class, e, "bad backend");
                     }
                     catch (URISyntaxException e){
-                        exceptionControllerSingleton.catchException(NewBusService.class, e, "bad backend");
+                        exceptionControllerSingleton.catchException(BusService.class, e, "bad backend");
                     }
                     catch (IOException e){
-                        exceptionControllerSingleton.catchException(NewBusService.class, e, "bad backend");
+                        exceptionControllerSingleton.catchException(BusService.class, e, "bad backend");
                     }
                     catch (Exception e) {
-                        exceptionControllerSingleton.catchException(NewBusService.class, e);
+                        exceptionControllerSingleton.catchException(BusService.class, e);
                     }
                 }
             }, 0, TRACK_UPDATE);
@@ -129,11 +129,11 @@ public class NewBusService implements Cloneable{
 
                     timeElapsed += TIME_ELAPSED;
                 } catch (JSONException e) {
-                    exceptionControllerSingleton.catchException(NewBusService.class, e, "bad backend");
+                    exceptionControllerSingleton.catchException(BusService.class, e, "bad backend");
                 } catch (NullPointerException e){
-                    exceptionControllerSingleton.catchException(NewBusService.class, e, "bad backend");
+                    exceptionControllerSingleton.catchException(BusService.class, e, "bad backend");
                 } catch (Exception e) {
-                    exceptionControllerSingleton.catchException(NewBusService.class, e);
+                    exceptionControllerSingleton.catchException(BusService.class, e);
                 }
             }
         }, 0, TIME_ELAPSED);
@@ -185,8 +185,8 @@ public class NewBusService implements Cloneable{
         return busCar.getMarker().getPosition();
     }
 
-    public NewBusService copy() throws CloneNotSupportedException{
-        return (NewBusService) this.clone();
+    public BusService copy() throws CloneNotSupportedException{
+        return (BusService) this.clone();
     }
 
     private boolean isValid(){
