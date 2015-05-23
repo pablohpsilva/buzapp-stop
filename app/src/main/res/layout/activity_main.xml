@@ -15,13 +15,15 @@
             android:layout_height="match_parent"
             tools:layout="@layout/fragment_map"/>
 
-        <LinearLayout android:id="@+id/map_interstitial_ads"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:layout_gravity="center|center_vertical"
-                      tools:ignore="UselessParent">
+        <LinearLayout
+                android:id="@+id/map_interstitial_ads"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center|center_vertical"
+                tools:ignore="UselessParent">
 
-                <include layout="@layout/fragment_ads"/>
+                <!--<include layout="@layout/fragment_ads"/>-->
 
         </LinearLayout>
 
@@ -29,10 +31,10 @@
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:layout_gravity="bottom|center_horizontal"
-                      android:orientation="horizontal"
+                      android:orientation="vertical"
                       tools:ignore="UselessParent">
 
-                <include layout="@layout/fragment_banner_ads"/>
+                <!--<include layout="@layout/fragment_banner_ads"/>-->
 
         </LinearLayout>
 

@@ -1,6 +1,9 @@
 package aloeio.buzapp_stop.app;
 
+import aloeio.buzapp_stop.app.Fragments.BannerAdsFragment;
+import aloeio.buzapp_stop.app.Fragments.InterstitialAdsFragment;
 import aloeio.buzapp_stop.app.Fragments.MapFragment;
+import aloeio.buzapp_stop.app.Models.Ads.InterstitialAd;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -8,29 +11,14 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MainActivity extends FragmentActivity implements MapFragment.OnFragmentInteractionListener{
-
-//    public MapManagerService mapManagerService;
-//    private ArrayAdapter<String> searchLinesAdapter = null;
-//    private ImageButton locationImageButton;
-//    private ImageButton settingsImageButton;
-//    private ImageButton scheduleImageButton;
-//    private Button pronaucementImageButton;
-//    private Button searchButton;
-//    private Utils utils;
-//    private SpeakingService speakingService;
-//    private MapView map;
-//    private SearchService searchService;
-//    private String[] LINES = new String[] { "T131", "T132","A339" };
-//    private LinearLayout loadingLinearLayout;
-//    private LinearLayout pronaucementLinearLayout;
-//    private LinearLayout baloonTipLinearLayout;
-//    private AutoCompleteTextView searchAutoCompleteTextView;
-//    private TextView loadingTextView;
+public class MainActivity extends FragmentActivity implements
+        MapFragment.OnFragmentInteractionListener,
+        BannerAdsFragment.OnFragmentInteractionListener,
+        InterstitialAdsFragment.OnFragmentInteractionListener{
+    private TextView redRouteTextView;
     private TextView blueRouteTextView;
-    private TextView greenRouteTextView;
+    private TextView redRouteTimeLeftTextView;
     private TextView blueRouteTimeLeftTextView;
-    private TextView greenRouteTimeLeftTextView;
     private ImageView buzappLogoImageView;
 
     @Override
@@ -39,9 +27,10 @@ public class MainActivity extends FragmentActivity implements MapFragment.OnFrag
         setContentView(R.layout.activity_main);
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
 
-//        this.mapManagerService = new MapManagerService(this);
         this.createMainActivityDefaults();
-        this.changeRouteData(0,5, "T123");
+        this.changeRouteData(0, 5, "T123");
+
+        this.callAdsFragments();
 
 //        getSupportFragmentManager().beginTransaction()
 //                .add(R.id.fragment_container, new MapFragment())
@@ -78,20 +67,40 @@ public class MainActivity extends FragmentActivity implements MapFragment.OnFrag
     public void changeRouteData(int route, int timeLeft, String routeName){
         if(route == 0){
             if(routeName != null)
+                redRouteTextView.setText(routeName);
+            redRouteTimeLeftTextView.setText(timeLeft + "min");
+        } else {
+            if(routeName != null)
                 blueRouteTextView.setText(routeName);
             blueRouteTimeLeftTextView.setText(timeLeft + "min");
-        } else{
-            if(routeName != null)
-                greenRouteTextView.setText(routeName);
-            greenRouteTimeLeftTextView.setText(timeLeft + "min");
         }
     }
 
     private void createMainActivityDefaults(){
-        blueRouteTextView = (TextView) findViewById(R.id.main_txt_blue_route);
-        greenRouteTextView = (TextView) findViewById(R.id.main_txt_green_route);
-        blueRouteTimeLeftTextView = (TextView) findViewById(R.id.main_txt_blue_route_time_left);
-        greenRouteTimeLeftTextView = (TextView) findViewById(R.id.main_txt_green_route_time_left);
+        redRouteTextView = (TextView) findViewById(R.id.main_txt_blue_route);
+        blueRouteTextView = (TextView) findViewById(R.id.main_txt_green_route);
+        redRouteTimeLeftTextView = (TextView) findViewById(R.id.main_txt_blue_route_time_left);
+        blueRouteTimeLeftTextView = (TextView) findViewById(R.id.main_txt_green_route_time_left);
         buzappLogoImageView = (ImageView) findViewById(R.id.main_img_buzapp_corner_right);
+    }
+
+    private void callAdsFragments(){
+        new Runnable(){
+            @Override
+            public void run(){
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.map_banner_ads, new BannerAdsFragment())
+                        .commit();
+            }
+        }.run();
+
+        new Runnable(){
+            @Override
+            public void run(){
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.map_interstitial_ads, new InterstitialAdsFragment())
+                        .commit();
+            }
+        }.run();
     }
 }
