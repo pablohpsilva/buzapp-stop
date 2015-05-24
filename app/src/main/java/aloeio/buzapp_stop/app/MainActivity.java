@@ -4,12 +4,17 @@ import aloeio.buzapp_stop.app.Fragments.BannerAdsFragment;
 import aloeio.buzapp_stop.app.Fragments.InterstitialAdsFragment;
 import aloeio.buzapp_stop.app.Fragments.MapFragment;
 import aloeio.buzapp_stop.app.Models.Ads.InterstitialAd;
+import aloeio.buzapp_stop.app.Utils.Utils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.File;
+
 
 public class MainActivity extends FragmentActivity implements
         MapFragment.OnFragmentInteractionListener,
@@ -20,12 +25,17 @@ public class MainActivity extends FragmentActivity implements
     private TextView redRouteTimeLeftTextView;
     private TextView blueRouteTimeLeftTextView;
     private ImageView buzappLogoImageView;
+    private Utils utils = null;
+    final private static String MAPZIPNAME = "Uberlandia_2015-03-06_223449.zip";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
+
+        utils = new Utils();
+        copyMapFileIfNeeded();
 
         this.createMainActivityDefaults();
         this.changeRouteData(0, 5, "T123");
@@ -102,5 +112,13 @@ public class MainActivity extends FragmentActivity implements
                         .commit();
             }
         }.run();
+    }
+
+    private void copyMapFileIfNeeded(){
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/osmdroid/"+MAPZIPNAME);
+        if(!file.exists()){
+            // If user does not have the map, create a copy on osmdroid folder, then.
+            utils.copyMapFile("file://android_asset/", MAPZIPNAME, Environment.getExternalStorageDirectory().getAbsolutePath() + "/osmdroid/", MainActivity.this);
+        }
     }
 }
