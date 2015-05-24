@@ -44,7 +44,7 @@ public class BusManagerService {
     public BusManagerService(final MapFragment fragment, MyMarkerInfoWindow infoWindow, GeoPoint userGeoPoint){
         this.activity = fragment;
         this.mapView = (MapView) fragment.getActivity().findViewById(R.id.home_mapview);
-
+        this.userGeoPoint = userGeoPoint;
         createBusMarker(infoWindow);
         createDefaultBus();
         createDefaultBusService();
@@ -110,17 +110,17 @@ public class BusManagerService {
         if(route.contains("123")){
             if((int)duration < firstRouteDuration) {
                 firstRouteDuration = (int)duration;
-                MapManagerService.getSmallestDuration(0, firstRouteDuration);
-                if(firstRouteDuration <= 2)
-                    firstRouteDuration = 1000;
+                MainActivity.changeRouteData(0, firstRouteDuration);
             }
+            if(firstRouteDuration <= 3)
+                firstRouteDuration = 100000;
         } else {
             if((int)duration < secondRouteDuration) {
                 secondRouteDuration = (int)duration;
-                MapManagerService.getSmallestDuration(1, secondRouteDuration);
-                if(secondRouteDuration <= 2)
-                    secondRouteDuration = 1000;
+                MainActivity.changeRouteData(1, secondRouteDuration);
             }
+            if(secondRouteDuration <= 3)
+                secondRouteDuration = 10000;
         }
     }
 
@@ -131,7 +131,7 @@ public class BusManagerService {
         BusService cloneBusService = this.busService.copy();
 
         cloneBus.setObjectData(json, cloneMarker);
-        cloneBusService.setObjectData(cloneBus, cloneBus.getUrl());
+        cloneBusService.setObjectData(cloneBus, cloneBus.getUrl(), this.userGeoPoint);
 
         mapView.getOverlays().add(cloneBus.getMarker());
         mapView.postInvalidate();

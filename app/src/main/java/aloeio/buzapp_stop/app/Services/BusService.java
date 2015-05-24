@@ -6,6 +6,7 @@ import org.apache.http.HttpException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osmdroid.bonuspack.routing.MapQuestRoadManager;
+import org.osmdroid.bonuspack.routing.OSRMRoadManager;
 import org.osmdroid.bonuspack.routing.Road;
 import org.osmdroid.bonuspack.routing.RoadManager;
 import org.osmdroid.util.GeoPoint;
@@ -65,10 +66,16 @@ public class BusService implements Cloneable{
      */
 
     public void setObjectData(BusCar car, String URL){
+        this.setObjectData(car, URL, null);
+    }
+
+    public void setObjectData(BusCar car, String URL, GeoPoint targetGeoPoint){
         setBusCar(car);
         setCurrentURL(URL);
-        this.roadManager = new MapQuestRoadManager(MAPQUEST_API_KEY);
-        this.roadManager.addRequestOption("routeType=multimodal");
+        setTargetGeoPoint(targetGeoPoint);
+        this.roadManager = new OSRMRoadManager();
+//        this.roadManager = new MapQuestRoadManager(MAPQUEST_API_KEY);
+//        this.roadManager.addRequestOption("routeType=multimodal");
     }
 
     public void resumeBusTracking() {
@@ -192,8 +199,9 @@ public class BusService implements Cloneable{
 
     public void setTargetGeoPoint(GeoPoint userGeoPoint){
         if(userGeoPoint != null) {
-            targetsArrayList = new ArrayList<GeoPoint>();
+            this.targetsArrayList = new ArrayList<GeoPoint>();
             this.userGeoPoint = userGeoPoint;
+            this.targetsArrayList.add(this.userGeoPoint);
         }
     }
 
@@ -215,16 +223,19 @@ public class BusService implements Cloneable{
             @Override
             public void run(){
                 if(busCar.getPosition() != null) {
-                    if (targetsArrayList.size() == 2)
-                        targetsArrayList.remove(1);
-                    targetsArrayList.add(busCar.getPosition());
-                    roadBetweenTargets = roadManager.getRoad(targetsArrayList);
-                    BusManagerService.getSmallestDuration(busCar.getRoute(), roadBetweenTargets.mDuration);
                     try {
+                        if (targetsArrayList.size() == 2)
+                            targetsArrayList.remove(targetsArrayList.size()-1);
+                        targetsArrayList.add(busCar.getPosition());
+                        roadBetweenTargets = roadManager.getRoad(targetsArrayList);
+                        BusManagerService.getSmallestDuration(busCar.getRoute(), roadBetweenTargets.mDuration);
                         this.finalize();
                     } catch (Throwable throwable) {
                         System.out.println("THREAD DID NOT DIE! " + throwable.getMessage());
                     }
+//                    catch (Exception e){
+//                        System.out.println("THREAD DID NOT DIE! " + e.getMessage());
+//                    }
                 }
             }
         }.run();
