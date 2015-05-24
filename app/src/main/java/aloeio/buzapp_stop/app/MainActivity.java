@@ -15,11 +15,11 @@ public class MainActivity extends FragmentActivity implements
         MapFragment.OnFragmentInteractionListener,
         BannerAdsFragment.OnFragmentInteractionListener,
         InterstitialAdsFragment.OnFragmentInteractionListener{
-    private TextView redRouteTextView;
-    private TextView blueRouteTextView;
-    private TextView redRouteTimeLeftTextView;
-    private TextView blueRouteTimeLeftTextView;
-    private ImageView buzappLogoImageView;
+    private static TextView redRouteTextView;
+    private static TextView blueRouteTextView;
+    private static TextView redRouteTimeLeftTextView;
+    private static TextView blueRouteTimeLeftTextView;
+    private static ImageView buzappLogoImageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,11 +60,11 @@ public class MainActivity extends FragmentActivity implements
 
     }
 
-    public void changeRouteData(int route, int timeLeft){
+    public static void changeRouteData(int route, int timeLeft){
         changeRouteData(route, timeLeft, null);
     }
 
-    public void changeRouteData(int route, int timeLeft, String routeName){
+    public static void changeRouteData(int route, int timeLeft, String routeName){
         if(route == 0){
             if(routeName != null)
                 redRouteTextView.setText(routeName);
