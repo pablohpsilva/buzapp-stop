@@ -1,6 +1,7 @@
 package aloeio.buzapp_stop.app.Services;
 
 import aloeio.buzapp_stop.app.Fragments.MapFragment;
+import aloeio.buzapp_stop.app.MainActivity;
 import aloeio.buzapp_stop.app.Models.Bus.BusCar;
 import aloeio.buzapp_stop.app.Models.Bus.BusRoute;
 import aloeio.buzapp_stop.app.Models.Bus.BusStop;
@@ -10,6 +11,7 @@ import aloeio.buzapp_stop.app.Services.Overrides.MyMarkerInfoWindow;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import aloeio.buzapp_stop.app.R;
+import android.os.Handler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,6 +49,8 @@ public class MapManagerService {
     private Polyline userRoadOverlay = null;
     private Road userRoadObject = null;
     private ArrayList<MyMarker> MyMarkerArrayList;
+    private Handler handler;
+    private Runnable runnable;
 
     final private int CAMERA_ZOOM = 16;
 //    final private int CAMERA_ZOOM = 15;
@@ -54,6 +58,7 @@ public class MapManagerService {
     final private int LINE_DEFAULT_COLOR = Color.parseColor("#4A34B5");
     final private int LINE_USER_COLOR = Color.parseColor("#6495ED");
     final private String MAPQUEST_API_KEY = "Fmjtd%7Cluu82quznu%2C2w%3Do5-94tgg4";
+
 
     public MapManagerService(final MapFragment fragment){
         this.fragment = fragment;
@@ -96,7 +101,7 @@ public class MapManagerService {
                 for (BusStop stop : this.busRoute.getBusStops())
                     mapView.getOverlays().add(stop.getMarker());
             }
-            drawPathNearestBusStop();
+//            drawPathNearestBusStop();
 
             mapView.postInvalidate();
         } catch (JSONException e) {
@@ -108,78 +113,66 @@ public class MapManagerService {
         }
     }
 
-    public void drawPathNearestBusStop(){
-        try {
-            if(this.userRoadObject != null)
-                this.removeUserRoad();
-
-//            ArrayList<GeoPoint> points = this.busRoute.getBusStopsGeoPoints();
-//            GeoPoint nearest = new NearAreaService().nearestGeoPoint(this.myLocationService.getLastKnownLocation(), points);
+//    public void drawPathNearestBusStop(){
+//        try {
+//            if(this.userRoadObject != null)
+//                this.removeUserRoad();
 //
-//            points.clear();
-//            points.add(this.myLocationService.getLastKnownLocation());
-//            points.add(nearest);
-
-            new Runnable(){
-                public void run() {
-                    ArrayList<GeoPoint> points = busRoute.getBusStopsGeoPoints();
-                    GeoPoint nearest = new NearAreaService().nearestGeoPoint(myLocationService.getLastKnownLocation(), points);
-
-                    points.clear();
-                    points.add(myLocationService.getLastKnownLocation());
-                    points.add(nearest);
-
-                    RoadManager roadManager = new MapQuestRoadManager(MAPQUEST_API_KEY);
-                    roadManager.addRequestOption("routeType=pedestrian");
-
-//            RoadManager roadManager = new OSRMRoadManager();
-
-                    userRoadObject = roadManager.getRoad(points);
-                    busRoadOverlay = RoadManager.buildRoadOverlay(userRoadObject, mapView.getContext());
-
-                    busRoadOverlay.setColor(LINE_USER_COLOR);
-                    busRoadOverlay.setWidth(LINE_WIDTH);
-
-                    startNavigation(userRoadObject);
-
-                    mapView.getOverlays().add(busRoadOverlay);
-                    mapView.postInvalidate();
-                }
-            }.run();
-
-//            RoadManager roadManager = new MapQuestRoadManager(this.MAPQUEST_API_KEY);
-//            roadManager.addRequestOption("routeType=pedestrian");
+////            ArrayList<GeoPoint> points = this.busRoute.getBusStopsGeoPoints();
+////            GeoPoint nearest = new NearAreaService().nearestGeoPoint(this.myLocationService.getLastKnownLocation(), points);
+////
+////            points.clear();
+////            points.add(this.myLocationService.getLastKnownLocation());
+////            points.add(nearest);
+//
+//            new Runnable(){
+//                public void run() {
+//                    ArrayList<GeoPoint> points = busRoute.getBusStopsGeoPoints();
+//                    GeoPoint nearest = new NearAreaService().nearestGeoPoint(myLocationService.getLastKnownLocation(), points);
+//
+//                    points.clear();
+//                    points.add(myLocationService.getLastKnownLocation());
+//                    points.add(nearest);
+//
+//                    RoadManager roadManager = new MapQuestRoadManager(MAPQUEST_API_KEY);
+//                    roadManager.addRequestOption("routeType=pedestrian");
 //
 ////            RoadManager roadManager = new OSRMRoadManager();
 //
-//            this.userRoadObject = roadManager.getRoad(points);
-//            busRoadOverlay = RoadManager.buildRoadOverlay(this.userRoadObject, mapView.getContext());
+//                    userRoadObject = roadManager.getRoad(points);
+//                    busRoadOverlay = RoadManager.buildRoadOverlay(userRoadObject, mapView.getContext());
 //
-//            busRoadOverlay.setColor(LINE_USER_COLOR);
-//            busRoadOverlay.setWidth(LINE_WIDTH);
+//                    busRoadOverlay.setColor(LINE_USER_COLOR);
+//                    busRoadOverlay.setWidth(LINE_WIDTH);
 //
-//            this.startNavigation(this.userRoadObject);
+//                    startNavigation(userRoadObject);
 //
-//            mapView.getOverlays().add(busRoadOverlay);
-//            mapView.postInvalidate();
-        } catch (NullPointerException e) {
-            exceptionControllerSingleton.catchException(MapManagerService.class, e);
-        } catch (Exception e) {
-            exceptionControllerSingleton.catchException(MapManagerService.class, e);
-        }
-    }
-
-    public void drawBus(String url){
-        try {
-            createBubbleInfo();
-            createBusManagerService();
-
-            this.busManagerService.startBus(url);
-
-        } catch (Exception e) {
-            this.exceptionControllerSingleton.catchException(MapManagerService.this.getClass(), e);
-        }
-    }
+//                    mapView.getOverlays().add(busRoadOverlay);
+//                    mapView.postInvalidate();
+//                }
+//            }.run();
+//
+////            RoadManager roadManager = new MapQuestRoadManager(this.MAPQUEST_API_KEY);
+////            roadManager.addRequestOption("routeType=pedestrian");
+////
+//////            RoadManager roadManager = new OSRMRoadManager();
+////
+////            this.userRoadObject = roadManager.getRoad(points);
+////            busRoadOverlay = RoadManager.buildRoadOverlay(this.userRoadObject, mapView.getContext());
+////
+////            busRoadOverlay.setColor(LINE_USER_COLOR);
+////            busRoadOverlay.setWidth(LINE_WIDTH);
+////
+////            this.startNavigation(this.userRoadObject);
+////
+////            mapView.getOverlays().add(busRoadOverlay);
+////            mapView.postInvalidate();
+//        } catch (NullPointerException e) {
+//            exceptionControllerSingleton.catchException(MapManagerService.class, e);
+//        } catch (Exception e) {
+//            exceptionControllerSingleton.catchException(MapManagerService.class, e);
+//        }
+//    }
 
     public void drawBuses(JSONArray json){
         try {
@@ -192,29 +185,6 @@ public class MapManagerService {
 
         } catch (Exception e) {
             this.exceptionControllerSingleton.catchException(MapManagerService.this.getClass(), e);
-        }
-    }
-
-    public void startNavigation(Road road){
-        try {
-            createStepMarker();
-            removeMarkerSteps();
-//            createBubbleInfo();
-//            MarkerInfoWindow infoWindow = new MarkerInfoWindow(R.layout.template_bonuspack_bubble, mapView);
-            for (int i = 0; i < road.mNodes.size(); i++) {
-                MyMarker clone = this.stepMarker.copy();
-                RoadNode node = road.mNodes.get(i);
-                clone.setPosition(node.mLocation);
-                clone.setTitle("Step " + i);
-                clone.setSnippet(node.mInstructions);
-                clone.setSubDescription(Road.getLengthDurationText(node.mLength, node.mDuration));
-//                clone.setInfoWindow(this.infoWindow);
-                this.MyMarkerArrayList.add(clone);
-                this.mapView.getOverlays().add(clone);
-            }
-            this.myLocationService.getMyLocationProvider().setRoad(road);
-        } catch(CloneNotSupportedException e){
-            exceptionControllerSingleton.catchException(MapManagerService.class, e);
         }
     }
 
@@ -395,8 +365,34 @@ public class MapManagerService {
     }
 
     private void createBusManagerService(){
-        if(this.busManagerService == null)
-            this.busManagerService = new BusManagerService(this.fragment, this.infoWindow);
+        if(this.busManagerService == null){
+//            GeoPoint user = this.getUserLocationOverlay().getMyLocation();
+            GeoPoint user = new GeoPoint(-18.9146982,-48.258671);
+//            if(user != null)
+            MyMarker busStopMarker = new MyMarker(this.mapView);
+            createMarkersDefault(busStopMarker, fragment.getResources().getDrawable(R.mipmap.ic_stop_sign_green));
+            busStopMarker.setPosition(user);
+            this.mapView.getOverlays().add(busStopMarker);
+            this.mapView.postInvalidate();
+
+            this.busManagerService = new BusManagerService(this.fragment, this.infoWindow, user);
+
+//            else{
+//                drawUserLocation();
+//                handler = new Handler();
+//                runnable = new Runnable(){
+//                    @Override
+//                    public void run(){
+//                        GeoPoint user = getUserLocationOverlay().getMyLocation();
+//                        busManagerService = new BusManagerService(fragment, infoWindow, user);
+//                        handler.removeCallbacks(runnable);
+//                        runnable = null;
+//                        handler = null;
+//                    }
+//                };
+//                handler.postDelayed(runnable, 1000);
+//            }
+        }
     }
 
     private void createArrayListSteps(){

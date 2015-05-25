@@ -5,11 +5,16 @@ import aloeio.buzapp_stop.app.Utils.HttpUtils;
 import org.apache.http.HttpException;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.osmdroid.bonuspack.routing.MapQuestRoadManager;
+import org.osmdroid.bonuspack.routing.OSRMRoadManager;
+import org.osmdroid.bonuspack.routing.Road;
+import org.osmdroid.bonuspack.routing.RoadManager;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -25,11 +30,16 @@ public class BusService implements Cloneable{
     private BusCar busCar = null;
     private GeoPoint easingGeoPointAux = new GeoPoint(0,0);
     private ExceptionService exceptionControllerSingleton = ExceptionService.getInstance();
+    private RoadManager roadManager;
+    private Road roadBetweenTargets;
+    private GeoPoint userGeoPoint;
+    ArrayList<GeoPoint> targetsArrayList;
 
 //    final private int TIME_ELAPSED = 100;
     final private int TRACK_UPDATE = 3000;
     final private int TOTAL_TIME = 2500;
     final private int TIME_ELAPSED = 100;
+    final private String MAPQUEST_API_KEY = "Fmjtd%7Cluu82quznu%2C2w%3Do5-94tgg4";
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
@@ -56,8 +66,16 @@ public class BusService implements Cloneable{
      */
 
     public void setObjectData(BusCar car, String URL){
+        this.setObjectData(car, URL, null);
+    }
+
+    public void setObjectData(BusCar car, String URL, GeoPoint targetGeoPoint){
         setBusCar(car);
         setCurrentURL(URL);
+        setTargetGeoPoint(targetGeoPoint);
+        this.roadManager = new OSRMRoadManager();
+//        this.roadManager = new MapQuestRoadManager(MAPQUEST_API_KEY);
+//        this.roadManager.addRequestOption("routeType=multimodal");
     }
 
     public void resumeBusTracking() {
@@ -85,6 +103,9 @@ public class BusService implements Cloneable{
 //                            easeBusMovement(busCar.getPosition(), new JSONObject(http.getRequest(currentURL)), mapView);
                         busCar.changeMarkerPosition(new JSONObject(http.getRequest(currentURL)));
                         mapView.postInvalidate();
+
+                        determineDistanceBetweenTargets();
+
                         System.gc();
 
                     } catch (JSONException e) {
@@ -176,6 +197,14 @@ public class BusService implements Cloneable{
         return this.busCar;
     }
 
+    public void setTargetGeoPoint(GeoPoint userGeoPoint){
+        if(userGeoPoint != null) {
+            this.targetsArrayList = new ArrayList<GeoPoint>();
+            this.userGeoPoint = userGeoPoint;
+            this.targetsArrayList.add(this.userGeoPoint);
+        }
+    }
+
     /**
      * Class helpers
      */
@@ -187,6 +216,29 @@ public class BusService implements Cloneable{
 
     public BusService copy() throws CloneNotSupportedException{
         return (BusService) this.clone();
+    }
+
+    private void determineDistanceBetweenTargets(){
+        new Runnable(){
+            @Override
+            public void run(){
+                if(busCar.getPosition() != null) {
+                    try {
+                        if (targetsArrayList.size() == 2)
+                            targetsArrayList.remove(targetsArrayList.size()-1);
+                        targetsArrayList.add(busCar.getPosition());
+                        roadBetweenTargets = roadManager.getRoad(targetsArrayList);
+                        BusManagerService.getSmallestDuration(busCar.getRoute(), roadBetweenTargets.mDuration);
+                        this.finalize();
+                    } catch (Throwable throwable) {
+                        System.out.println("THREAD DID NOT DIE! " + throwable.getMessage());
+                    }
+//                    catch (Exception e){
+//                        System.out.println("THREAD DID NOT DIE! " + e.getMessage());
+//                    }
+                }
+            }
+        }.run();
     }
 
     private boolean isValid(){

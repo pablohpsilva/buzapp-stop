@@ -1,6 +1,7 @@
 package aloeio.buzapp_stop.app.Services;
 
 import aloeio.buzapp_stop.app.Fragments.MapFragment;
+import aloeio.buzapp_stop.app.MainActivity;
 import aloeio.buzapp_stop.app.Models.Bus.BusCar;
 import aloeio.buzapp_stop.app.Services.Overrides.MyMarker;
 import aloeio.buzapp_stop.app.Services.Overrides.MyMarkerInfoWindow;
@@ -10,6 +11,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osmdroid.bonuspack.overlays.Marker;
+import org.osmdroid.bonuspack.routing.MapQuestRoadManager;
+import org.osmdroid.bonuspack.routing.RoadManager;
+import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
 import java.util.ArrayList;
@@ -25,10 +29,22 @@ public class BusManagerService {
     private MapView mapView;
     private BusCar busCar;
     private BusService busService;
+    private GeoPoint userGeoPoint;
 
-    public BusManagerService(final MapFragment fragment, MyMarkerInfoWindow infoWindow){
+    /*
+     * Manage the duration to a bus get to
+     */
+    private static int firstRouteDuration = 10000;
+    private static int secondRouteDuration = 10000;
+
+    /**
+     *
+     */
+
+    public BusManagerService(final MapFragment fragment, MyMarkerInfoWindow infoWindow, GeoPoint userGeoPoint){
         this.activity = fragment;
         this.mapView = (MapView) fragment.getActivity().findViewById(R.id.home_mapview);
+        this.userGeoPoint = userGeoPoint;
         createBusMarker(infoWindow);
         createDefaultBus();
         createDefaultBusService();
@@ -89,13 +105,33 @@ public class BusManagerService {
             return (this.busServiceArrayList.size() > 0);
     }
 
+
+    public static void getSmallestDuration(String route, double duration){
+        if(route.contains("123")){
+            if((int)duration < firstRouteDuration) {
+                firstRouteDuration = (int)duration;
+                MainActivity.changeRouteData(0, firstRouteDuration);
+            }
+            if(firstRouteDuration <= 3)
+                firstRouteDuration = 100000;
+        } else {
+            if((int)duration < secondRouteDuration) {
+                secondRouteDuration = (int)duration;
+                MainActivity.changeRouteData(1, secondRouteDuration);
+            }
+            if(secondRouteDuration <= 3)
+                secondRouteDuration = 10000;
+        }
+    }
+
+
     private void drawBuses(JSONObject json) throws JSONException, CloneNotSupportedException{
         MyMarker cloneMarker = this.busMarker.copy();
         BusCar cloneBus = this.busCar.copy();
         BusService cloneBusService = this.busService.copy();
 
         cloneBus.setObjectData(json, cloneMarker);
-        cloneBusService.setObjectData(cloneBus, cloneBus.getUrl());
+        cloneBusService.setObjectData(cloneBus, cloneBus.getUrl(), this.userGeoPoint);
 
         mapView.getOverlays().add(cloneBus.getMarker());
         mapView.postInvalidate();
