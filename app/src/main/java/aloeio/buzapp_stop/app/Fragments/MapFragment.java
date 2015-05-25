@@ -51,6 +51,8 @@ public class MapFragment extends Fragment{
     private TextView loadingTextView;
     private View rootView;
     private MapView mapView;
+    private Handler search;
+    private Runnable searchRunnable;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -233,6 +235,8 @@ public class MapFragment extends Fragment{
             }
         });
         baloonTipLinearLayout.setVisibility(View.GONE);
+//        callSearch();
+
 //
 //
 //
@@ -302,6 +306,22 @@ public class MapFragment extends Fragment{
 
     public void changeDistance(double d){
 
+    }
+
+    public void callSearch(){
+        search = new Handler();
+        searchRunnable = new Runnable(){
+            @Override
+            public void run(){
+                SearchService service = new SearchService();
+                service.searchLine("T131",MapFragment.this);
+                System.out.println("Route");
+                search.removeCallbacks(searchRunnable);
+                searchRunnable = null;
+                search = null;
+            }
+        };
+        search.post(searchRunnable);
     }
 
 }

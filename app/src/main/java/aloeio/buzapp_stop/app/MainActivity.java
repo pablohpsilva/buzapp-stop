@@ -10,6 +10,7 @@ import aloeio.buzapp_stop.app.Utils.Utils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
@@ -22,11 +23,13 @@ public class MainActivity extends FragmentActivity implements
         MapFragment.OnFragmentInteractionListener,
         BannerAdsFragment.OnFragmentInteractionListener,
         InterstitialAdsFragment.OnFragmentInteractionListener{
-    private TextView redRouteTextView;
-    private TextView blueRouteTextView;
-    private TextView redRouteTimeLeftTextView;
-    private TextView blueRouteTimeLeftTextView;
-    private ImageView buzappLogoImageView;
+    private static TextView redRouteTextView;
+    private static TextView blueRouteTextView;
+    private static TextView redRouteTimeLeftTextView;
+    private static TextView blueRouteTimeLeftTextView;
+    private static ImageView buzappLogoImageView;
+    private Handler banner, interstitial;
+    private Runnable bannerRunnable, interstitialRunnable;
     private Utils utils = null;
     final private static String MAPZIPNAME = "Uberlandia_2015-03-06_223449.zip";
 
@@ -72,11 +75,11 @@ public class MainActivity extends FragmentActivity implements
 
     }
 
-    public void changeRouteData(int route, int timeLeft){
+    public static void changeRouteData(int route, int timeLeft){
         changeRouteData(route, timeLeft, null);
     }
 
-    public void changeRouteData(int route, int timeLeft, String routeName){
+    public static void changeRouteData(int route, int timeLeft, String routeName){
         if(route == 0){
             if(routeName != null)
                 redRouteTextView.setText(routeName);
@@ -86,6 +89,13 @@ public class MainActivity extends FragmentActivity implements
                 blueRouteTextView.setText(routeName);
             blueRouteTimeLeftTextView.setText(timeLeft + "min");
         }
+        System.out.println("|");
+        System.out.println("|");
+        System.out.println("|");
+        System.out.println("min: " + timeLeft + "; on route: " + route);
+        System.out.println("|");
+        System.out.println("|");
+        System.out.println("|");
     }
 
     private void createMainActivityDefaults(){
@@ -97,23 +107,37 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void callAdsFragments(){
-        new Runnable(){
+        banner = new Handler();
+        bannerRunnable = new Runnable(){
             @Override
             public void run(){
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.map_banner_ads, new BannerAdsFragment())
                         .commit();
+                System.out.println("FRAGMENT BANNER CALLED");
+                banner.removeCallbacks(bannerRunnable);
+                bannerRunnable = null;
+                banner = null;
             }
-        }.run();
+        };
 
-        new Runnable(){
+        interstitial = new Handler();
+        interstitialRunnable = new Runnable(){
             @Override
             public void run(){
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.map_interstitial_ads, new InterstitialAdsFragment())
                         .commit();
+                System.out.println("FRAGMENT INTERSTITIAL CALLED");
+                interstitial.removeCallbacks(interstitialRunnable);
+                interstitialRunnable = null;
+                interstitial = null;
             }
-        }.run();
+        };
+
+        banner.post(bannerRunnable);
+        interstitial.post(interstitialRunnable);
+
     }
 
     private void copyMapFileIfNeeded(){
