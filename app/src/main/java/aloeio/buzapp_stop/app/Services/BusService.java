@@ -104,7 +104,8 @@ public class BusService implements Cloneable{
                         busCar.changeMarkerPosition(new JSONObject(http.getRequest(currentURL)));
                         mapView.postInvalidate();
 
-                        determineDistanceBetweenTargets();
+                        if(targetsArrayList != null)
+                            determineDistanceBetweenTargets();
 
                         System.gc();
 

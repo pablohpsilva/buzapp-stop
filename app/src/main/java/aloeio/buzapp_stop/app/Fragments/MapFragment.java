@@ -233,7 +233,8 @@ public class MapFragment extends Fragment{
             }
         });
         baloonTipLinearLayout.setVisibility(View.GONE);
-        callSearch();
+//        callSearch();
+
 //
 //
 //

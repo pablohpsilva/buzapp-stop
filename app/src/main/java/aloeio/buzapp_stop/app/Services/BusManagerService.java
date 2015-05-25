@@ -41,6 +41,10 @@ public class BusManagerService {
      *
      */
 
+    public BusManagerService(final MapFragment fragment, MyMarkerInfoWindow infoWindow){
+        this(fragment, infoWindow, null);
+    }
+
     public BusManagerService(final MapFragment fragment, MyMarkerInfoWindow infoWindow, GeoPoint userGeoPoint){
         this.activity = fragment;
         this.mapView = (MapView) fragment.getActivity().findViewById(R.id.home_mapview);
@@ -131,7 +135,8 @@ public class BusManagerService {
         BusService cloneBusService = this.busService.copy();
 
         cloneBus.setObjectData(json, cloneMarker);
-        cloneBusService.setObjectData(cloneBus, cloneBus.getUrl(), this.userGeoPoint);
+//        cloneBusService.setObjectData(cloneBus, cloneBus.getUrl(), this.userGeoPoint);
+        cloneBusService.setObjectData(cloneBus, cloneBus.getUrl());
 
         mapView.getOverlays().add(cloneBus.getMarker());
         mapView.postInvalidate();

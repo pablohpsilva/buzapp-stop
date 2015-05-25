@@ -367,15 +367,16 @@ public class MapManagerService {
     private void createBusManagerService(){
         if(this.busManagerService == null){
 //            GeoPoint user = this.getUserLocationOverlay().getMyLocation();
-            GeoPoint user = new GeoPoint(-18.9146982,-48.258671);
+//            GeoPoint user = new GeoPoint(-18.9146982,-48.258671);
 //            if(user != null)
-            MyMarker busStopMarker = new MyMarker(this.mapView);
-            createMarkersDefault(busStopMarker, fragment.getResources().getDrawable(R.mipmap.ic_stop_sign_green));
-            busStopMarker.setPosition(user);
-            this.mapView.getOverlays().add(busStopMarker);
-            this.mapView.postInvalidate();
+//            MyMarker busStopMarker = new MyMarker(this.mapView);
+//            createMarkersDefault(busStopMarker, fragment.getResources().getDrawable(R.mipmap.ic_stop_sign_green));
+//            busStopMarker.setPosition(user);
+//            this.mapView.getOverlays().add(busStopMarker);
+//            this.mapView.postInvalidate();
 
-            this.busManagerService = new BusManagerService(this.fragment, this.infoWindow, user);
+//            this.busManagerService = new BusManagerService(this.fragment, this.infoWindow, user);
+            this.busManagerService = new BusManagerService(this.fragment, this.infoWindow);
 
 //            else{
 //                drawUserLocation();
