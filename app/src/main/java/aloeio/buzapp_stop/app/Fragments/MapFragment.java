@@ -133,6 +133,8 @@ public class MapFragment extends Fragment{
         if(this.mapView == null) {
             this.mapView = (MapView) MapFragment.this.getActivity().findViewById(R.id.home_mapview);
             startServices();
+            searchService.searchLine("T131", MapFragment.this);
+            searchService.searchLineAndAdd("T132", MapFragment.this);
         }
     }
 

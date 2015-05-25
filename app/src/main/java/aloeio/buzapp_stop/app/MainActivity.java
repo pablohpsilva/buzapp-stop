@@ -4,6 +4,8 @@ import aloeio.buzapp_stop.app.Fragments.BannerAdsFragment;
 import aloeio.buzapp_stop.app.Fragments.InterstitialAdsFragment;
 import aloeio.buzapp_stop.app.Fragments.MapFragment;
 import aloeio.buzapp_stop.app.Models.Ads.InterstitialAd;
+import aloeio.buzapp_stop.app.Services.SearchService;
+import aloeio.buzapp_stop.app.Utils.Constants.UrlConstants;
 import aloeio.buzapp_stop.app.Utils.Utils;
 import android.net.Uri;
 import android.os.Bundle;

@@ -128,9 +128,32 @@ public class SearchService {
         //    exceptionControllerSingleton.catchException(SearchService.class, e, "no route");
         } catch (Exception e) {
             exceptionControllerSingleton.catchException(SearchService.class, e, "no connection");
+        }
+    }
 
+    public void searchLineAndAdd(String lineID, android.support.v4.app.Fragment fragment){
+        try {
+            lineName = lineID;
+            if(lineName != null && !lineName.equals("")){
+//                if(map.getOverlays() != null && !map.getOverlays().isEmpty()){
+//                    mapmgn.clearBusStops();
+//                    mapmgn.clearMapOverlays();
+//                }
+                lineName = lineID;
+                routeURL = UrlConstants.ROUTE_MODEL + lineName;
+                stopURL = UrlConstants.STOP_MODEL + lineName;
+                final String busURLDefault = UrlConstants.BUS_MODEL + lineName + "/";
+//                String busURL1 = busURLDefault + "/1";
+//                String busURL2 = busURLDefault + "/2";
+//                String busURL3 = busURLDefault + "/3";
+                this.showAllBuses(fragment, busURLDefault);
+            }
 
-
+            //}
+            //catch (JSONException e) {
+            //    exceptionControllerSingleton.catchException(SearchService.class, e, "no route");
+        } catch (Exception e) {
+            exceptionControllerSingleton.catchException(SearchService.class, e, "no connection");
         }
     }
 

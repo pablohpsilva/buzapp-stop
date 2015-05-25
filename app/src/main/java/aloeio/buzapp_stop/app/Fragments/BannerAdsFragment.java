@@ -1,14 +1,19 @@
 package aloeio.buzapp_stop.app.Fragments;
 
+import aloeio.buzapp_stop.app.MainActivity;
 import android.app.Activity;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import aloeio.buzapp_stop.app.R;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +34,8 @@ public class BannerAdsFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private WebView contentView;
+    private View rootView;
 
     /**
      * Use this factory method to create a new instance of
@@ -65,7 +72,10 @@ public class BannerAdsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_banner_ads, container, false);
+        rootView = inflater.inflate(R.layout.fragment_banner_ads, container, false);
+        setBannerFragmentDefaults();
+        return rootView;
+//        return inflater.inflate(R.layout.fragment_banner_ads, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -92,6 +102,10 @@ public class BannerAdsFragment extends Fragment {
         mListener = null;
     }
 
+    public void setContentView(WebView contentView) {
+        this.contentView = contentView;
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -106,5 +120,29 @@ public class BannerAdsFragment extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
+    private void setBannerFragmentDefaults() {
+        contentView = (WebView) rootView.findViewById(R.id.banner_ads);
+        contentView.setBackgroundColor(Color.TRANSPARENT);
+        WebSettings webSettings = contentView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        setContentView(contentView);
+
+        // disable scroll on touch
+        contentView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return (event.getAction() == MotionEvent.ACTION_MOVE);
+            }
+        });
+
+        renderBanner();
+    }
+
+    private void renderBanner(){
+        String summary = "<html><body style=\"display:block;overflow:hidden;margin-top:0px;margin-left:0px;margin-right:0px;max-width:500dp\"><img style=\"display: block;margin-left: auto;margin-right: auto\" src=\"https://cloud.githubusercontent.com/assets/2090635/7781853/fc79a794-00cf-11e5-9cb2-c9063454e076.jpg\" height=\"80dp\" width=\"75%\"></body></html>";
+        contentView.loadData(summary, "text/html", null);
+    }
+
+
 
 }
