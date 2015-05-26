@@ -1,14 +1,21 @@
 package aloeio.buzapp_stop.app.Fragments;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import aloeio.buzapp_stop.app.R;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +36,12 @@ public class InterstitialAdsFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private WebView contentView;
+    private View rootView;
+    private Timer timer = null;
+    private TimerTask timerTask = null;
+    private boolean change = true;
+    private String summary = "";
 
     /**
      * Use this factory method to create a new instance of
@@ -65,7 +78,9 @@ public class InterstitialAdsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ads, container, false);
+        rootView = inflater.inflate(R.layout.fragment_ads, container, false);
+        setBannerFragmentDefaults();
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -106,5 +121,68 @@ public class InterstitialAdsFragment extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
+
+    public void setContentView(WebView contentView) {
+        this.contentView = contentView;
+    }
+
+    private void setBannerFragmentDefaults() {
+        contentView = (WebView) rootView.findViewById(R.id.interstitial_img_ads);
+        contentView.setBackgroundColor(Color.TRANSPARENT);
+        WebSettings webSettings = contentView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        setContentView(contentView);
+
+        // disable scroll on touch
+        contentView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return (event.getAction() == MotionEvent.ACTION_MOVE);
+            }
+        });
+
+//        contentView.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                changeInterstitialAd();
+//            }
+//        });
+        change = !change;
+        renderInterstitialAd(getInterstitialAd(change));
+
+    }
+
+    // Gets banner from service. This is only a test function and will be modified with a service call.
+    private String getInterstitialAd(Boolean test){
+        if(test == true){
+            summary = "https://cloud.githubusercontent.com/assets/2090635/7781881/c369bcbc-00d1-11e5-8dcf-2ac94107bef0.jpg";
+        } else {
+            summary = "http://api.dailysocial.net/en/wp-content/uploads/2013/10/mobileads_shutterstock_140311663.jpg";
+        }
+        return summary;
+    }
+
+    // Render banner on screen with a webview.
+    private void renderInterstitialAd(String imageUrl){
+        summary = "<html><body style=\"display:block;overflow:hidden;margin-top:0px;margin-left:0px;margin-right:0px;max-width:500dp\"><img style=\"display: block;margin-left: auto;margin-right: auto\" src=\""+imageUrl+"\" height=\"80dp\" width=\"75%\"></body></html>";
+        contentView.loadData(summary, "text/html", null);
+    }
+
+//    // Fetchs and render a new banner at every 10 seconds.
+//    public void changeInterstitialAd() {
+//        timer = new Timer();
+//        timerTask = new TimerTask() {
+//            public void run() {
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        change = !change;
+//                        renderInterstitialAd(getInterstitialAd(change));
+//                    }
+//                });
+//            }
+//        };
+//        timer.schedule(timerTask, 0, 10000);
+//    }
 
 }
