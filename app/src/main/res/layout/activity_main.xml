@@ -38,127 +38,198 @@
 
         </LinearLayout>
 
-        <LinearLayout android:id="@+id/map_next_bus"
-                      android:layout_width="370dp"
-                      android:layout_height="80dp"
-                      android:layout_gravity="top|right|center_horizontal"
-                      android:orientation="horizontal"
-                      android:background="@color/black_overlay"
-                      tools:ignore="UselessParent">
+    <GridLayout
+            android:id="@+id/map_next_bus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="right">
 
-                <GridLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent">
+        <LinearLayout
+                android:id="@+id/map_next_bus_route1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/circle_shape_blue"
+                android:layout_row="1"
+                android:layout_column="1">
 
-                        <Button
-                                android:layout_width="50dp"
-                                android:layout_height="20dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginLeft="5dp"
-                                android:shadowRadius="0"
-                                android:shadowDx="0"
-                                android:shadowDy="0"
-                                android:background="@color/path_red"
-                                android:layout_row="1"
-                                android:layout_column="1"
-                                />
+            <TextView
+                android:id="@+id/main_txt_blue_route"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center_horizontal"
+                android:text="T123"
+                android:textSize="40sp"/>
 
-                        <TextView
-                                android:id="@+id/main_txt_blue_route"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/white"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginLeft="10dp"
-                                android:text="T129"
-                                android:textSize="25sp"
-                                android:layout_row="1"
-                                android:layout_column="2"/>
-
-                        <Button
-                                android:layout_width="50dp"
-                                android:layout_height="20dp"
-                                android:shadowRadius="0"
-                                android:shadowDx="0"
-                                android:shadowDy="0"
-                                android:layout_marginBottom="5dp"
-                                android:layout_marginLeft="5dp"
-                                android:background="@color/path_blue"
-                                android:layout_row="2"
-                                android:layout_column="1"
-                                />
-
-                        <TextView
-                                android:id="@+id/main_txt_green_route"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/white"
-                                android:layout_marginLeft="10dp"
-                                android:text="T129"
-                                android:textSize="25sp"
-                                android:layout_row="2"
-                                android:layout_column="2"/>
-
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginLeft="20dp"
-                                android:layout_marginRight="20dp"
-                                android:src="@mipmap/ic_action_alarms"
-                                android:layout_row="1"
-                                android:layout_column="3"/>
-
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:layout_marginLeft="20dp"
-                                android:layout_marginRight="20dp"
-                                android:src="@mipmap/ic_action_alarms"
-                                android:layout_row="2"
-                                android:layout_column="3"/>
-
-                        <TextView
-                                android:id="@+id/main_txt_blue_route_time_left"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/white"
-                                android:layout_marginTop="10dp"
-                                android:text="12 min"
-                                android:textSize="25sp"
-                                android:layout_row="1"
-                                android:layout_column="4"/>
-
-                        <TextView
-                                android:id="@+id/main_txt_green_route_time_left"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/white"
-                                android:text="13 min"
-                                android:textSize="25sp"
-                                android:layout_row="2"
-                                android:layout_column="4"/>
-
-                        <LinearLayout
-                                      android:layout_width="68dp"
-                                      android:layout_height="68dp"
-                                      android:layout_gravity="top|right|center_horizontal"
-                                      android:orientation="horizontal"
-                                      android:layout_marginTop="-33dp"
-                                      tools:ignore="UselessParent">
-                                <ImageView
-                                        android:id="@+id/main_img_buzapp_corner_right"
-                                        android:layout_width="65dp"
-                                        android:layout_height="65dp"
-                                        android:src="@mipmap/buzapp_logo_1k"
-                                        android:layout_marginLeft="0dp"
-                                        android:layout_marginTop="-2dp"
-                                        android:layout_row="1"
-                                        android:layout_column="5"/>
-                        </LinearLayout>
-                </GridLayout>
+            <TextView
+                android:id="@+id/main_txt_blue_route_time_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal"
+                android:text="12 min"
+                android:textSize="28sp"/>
 
         </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/map_next_bus_route2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/circle_shape_red"
+                android:layout_row="1"
+                android:layout_column="2">
+
+            <TextView
+                android:id="@+id/main_txt_green_route"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:text="T129"
+                android:textSize="40sp"/>
+
+            <TextView
+                android:id="@+id/main_txt_green_route_time_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="133 min"
+                android:layout_marginTop="10dp"
+                android:textSize="28sp"
+                android:layout_gravity="center_horizontal"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_row="1"
+                android:layout_column="3">
+            <ImageView
+                    android:id="@+id/main_img_buzapp_corner_right"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@mipmap/buzapp_logo_1k"
+                    android:orientation="vertical"/>
+        </LinearLayout>
+
+
+    </GridLayout>
+
+        <!--<LinearLayout android:id="@+id/map_next_bus_route1"-->
+                      <!--android:layout_width="wrap_content"-->
+                      <!--android:layout_height="wrap_content"-->
+                      <!--android:orientation="horizontal"-->
+                      <!--android:background="@drawable/circle_shape_blue">-->
+
+                <!--<GridLayout-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="fill_parent">-->
+
+                        <!--<Button-->
+                                <!--android:layout_width="50dp"-->
+                                <!--android:layout_height="20dp"-->
+                                <!--android:layout_marginTop="5dp"-->
+                                <!--android:layout_marginLeft="5dp"-->
+                                <!--android:shadowRadius="0"-->
+                                <!--android:shadowDx="0"-->
+                                <!--android:shadowDy="0"-->
+                                <!--android:background="@color/path_red"-->
+                                <!--android:layout_row="1"-->
+                                <!--android:layout_column="1"-->
+                                <!--/>-->
+
+                        <!--<TextView-->
+                                <!--android:id="@+id/main_txt_blue_route"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:textColor="@color/white"-->
+                                <!--android:layout_marginTop="10dp"-->
+                                <!--android:layout_marginLeft="10dp"-->
+                                <!--android:text="T129"-->
+                                <!--android:textSize="25sp"-->
+                                <!--android:layout_row="1"-->
+                                <!--android:layout_column="2"/>-->
+
+                        <!--<Button-->
+                                <!--android:layout_width="50dp"-->
+                                <!--android:layout_height="20dp"-->
+                                <!--android:shadowRadius="0"-->
+                                <!--android:shadowDx="0"-->
+                                <!--android:shadowDy="0"-->
+                                <!--android:layout_marginBottom="5dp"-->
+                                <!--android:layout_marginLeft="5dp"-->
+                                <!--android:background="@color/path_blue"-->
+                                <!--android:layout_row="2"-->
+                                <!--android:layout_column="1"-->
+                                <!--/>-->
+
+                        <!--<TextView-->
+                                <!--android:id="@+id/main_txt_green_route"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:textColor="@color/white"-->
+                                <!--android:layout_marginLeft="10dp"-->
+                                <!--android:text="T129"-->
+                                <!--android:textSize="25sp"-->
+                                <!--android:layout_row="2"-->
+                                <!--android:layout_column="2"/>-->
+
+                        <!--<ImageView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_marginTop="8dp"-->
+                                <!--android:layout_marginLeft="20dp"-->
+                                <!--android:layout_marginRight="20dp"-->
+                                <!--android:src="@mipmap/ic_action_alarms"-->
+                                <!--android:layout_row="1"-->
+                                <!--android:layout_column="3"/>-->
+
+                        <!--<ImageView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_marginTop="2dp"-->
+                                <!--android:layout_marginLeft="20dp"-->
+                                <!--android:layout_marginRight="20dp"-->
+                                <!--android:src="@mipmap/ic_action_alarms"-->
+                                <!--android:layout_row="2"-->
+                                <!--android:layout_column="3"/>-->
+
+                        <!--<TextView-->
+                                <!--android:id="@+id/main_txt_blue_route_time_left"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:textColor="@color/white"-->
+                                <!--android:layout_marginTop="10dp"-->
+                                <!--android:text="12 min"-->
+                                <!--android:textSize="25sp"-->
+                                <!--android:layout_row="1"-->
+                                <!--android:layout_column="4"/>-->
+
+                        <!--<TextView-->
+                                <!--android:id="@+id/main_txt_green_route_time_left"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:textColor="@color/white"-->
+                                <!--android:text="13 min"-->
+                                <!--android:textSize="25sp"-->
+                                <!--android:layout_row="2"-->
+                                <!--android:layout_column="4"/>-->
+
+                <!--</GridLayout>-->
+
+        <!--</LinearLayout>-->
 
 </FrameLayout>

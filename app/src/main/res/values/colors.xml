@@ -24,11 +24,11 @@
     <color name="path_red">#ff0000</color>
     <color name="path_blue">#0971B2</color>
     <color name="light_gray">#fafafa</color>
-    <color name="light_transparent_blue">#CC1286B2</color>
+    <color name="light_transparent_blue">#991286B2</color>
     <color name="light_transparent_dark_blue">#124572</color>
     <color name="light_blue">#1286B2</color>
     <color name="light_dark_blue">#00A5E5</color>
-    <color name="light_transparent_red">#CCFF4447</color>
+    <color name="light_transparent_red">#99FF4447</color>
     <color name="light_green">#5cb85c</color>
     <color name="light_dark_green">#3D7B3D</color>
     <color name="light_transparent_white">#99FFFFFF</color>
