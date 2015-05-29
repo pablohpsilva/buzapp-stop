@@ -158,6 +158,8 @@ public class MapFragment extends Fragment{
         utils = new Utils();
         if(utils.checkGPS(MapFragment.this.getActivity()))
             mapManagerService.drawUserLocation();
+        searchService.searchLine("T132", MapFragment.this);
+        searchService.searchLine("T131", MapFragment.this);
     }
 
     private void setMainActivityDefaults() {

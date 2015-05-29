@@ -89,7 +89,8 @@ public class MapManagerService {
                 for (BusStop stop : this.busRoute.getBusStops())
                     mapView.getOverlays().add(stop.getMarker());
             } else {
-                removeRouteObjects();
+                //Remove as rotas na tela \/
+                //removeRouteObjects();
                 System.gc();
 //                this.busStopMarker = null;
 //                createStopsMarker();
@@ -186,8 +187,9 @@ public class MapManagerService {
         try {
             createBubbleInfo();
             createBusManagerService();
-            if(this.busManagerService.inUse())
-                this.busManagerService.stopRemoveBuses();
+            //remove os onibus já na tela\/
+//            if(this.busManagerService.inUse())
+//                this.busManagerService.stopRemoveBuses();
 
             this.busManagerService.startBus(json);
 
