@@ -5,8 +5,8 @@ package aloeio.buzapp_stop.app.Utils.Constants;
  */
 public class UrlConstants {
     private static final String BACKEND_PROTOCOL        = "http://";
-    private static final String BACKEND_SERVICE_IP      = "54.69.229.42";
-    private static final String BACKEND_SERVICE_PORT    = ":8080/";
+    private static final String BACKEND_SERVICE_IP      = "buzapp-services.aloeio.com";
+    private static final String BACKEND_SERVICE_PORT    = ":80/";
     private static final String BACKEND_SERVICE_URL     = BACKEND_PROTOCOL + BACKEND_SERVICE_IP + BACKEND_SERVICE_PORT;
     private static final String BACKEND_ROUTE_PATH_URL  = "busweb/route/get/";
     private static final String BACKEND_BUS_PATH_URL    = "busweb/bus/get/";

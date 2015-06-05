@@ -15,18 +15,6 @@
             android:layout_height="match_parent"
             tools:layout="@layout/fragment_map"/>
 
-        <LinearLayout
-                android:id="@+id/map_interstitial_ads"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center|center_vertical"
-                tools:ignore="UselessParent">
-
-                <!--<include layout="@layout/fragment_ads"/>-->
-
-        </LinearLayout>
-
         <LinearLayout android:id="@+id/map_banner_ads"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
@@ -231,5 +219,17 @@
                 <!--</GridLayout>-->
 
         <!--</LinearLayout>-->
+
+    <LinearLayout
+            android:id="@+id/map_interstitial_ads"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center|center_vertical"
+            tools:ignore="UselessParent">
+
+        <!--<include layout="@layout/fragment_ads"/>-->
+
+    </LinearLayout>
 
 </FrameLayout>

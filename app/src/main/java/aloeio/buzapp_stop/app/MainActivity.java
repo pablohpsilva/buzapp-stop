@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends FragmentActivity implements
@@ -29,9 +31,12 @@ public class MainActivity extends FragmentActivity implements
     private static TextView blueRouteTimeLeftTextView;
     private static ImageView buzappLogoImageView;
     private Handler banner, interstitial;
-    private Runnable bannerRunnable, interstitialRunnable;
+    private Runnable bannerRunnable, interstitialRunnable, changeFragmentsRunnable;
     private Utils utils = null;
     final private static String MAPZIPNAME = "Uberlandia_2015-03-06_223449.zip";
+    private Timer timer = null;
+    private TimerTask timerTask = null;
+    private boolean change = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,6 +73,8 @@ public class MainActivity extends FragmentActivity implements
 //            this.callFragment(0, null);
 //            this.setMainActivityDefaults();
         }
+
+//        changeInterstitialAd(10);
     }
 
     @Override
@@ -137,7 +144,6 @@ public class MainActivity extends FragmentActivity implements
 
         banner.post(bannerRunnable);
         interstitial.post(interstitialRunnable);
-
     }
 
     private void copyMapFileIfNeeded(){
@@ -145,6 +151,37 @@ public class MainActivity extends FragmentActivity implements
         if(!file.exists()){
             // If user does not have the map, create a copy on osmdroid folder, then.
             utils.copyMapFile("file://android_asset/", MAPZIPNAME, Environment.getExternalStorageDirectory().getAbsolutePath() + "/osmdroid/", MainActivity.this);
+        }
+    }
+
+    // Fetchs and render a new banner at every 10 seconds.
+    public void changeInterstitialAd(int seconds) {
+        timer = new Timer();
+        timerTask = new TimerTask() {
+            public void run() {
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        change = !change;
+                        callFragment(change, null);
+                    }
+                });
+            }
+        };
+        timer.schedule(timerTask, 0, seconds*1000);
+    }
+
+    private void callFragment(Boolean isMap, Bundle bundle){
+        if(isMap == true) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.main_fragment_map, new MapFragment())
+                    .addToBackStack(null)
+                    .commit();
+        } else {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.main_fragment_map, new InterstitialAdsFragment())
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 }

@@ -15,6 +15,9 @@ import aloeio.buzapp_stop.app.R;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -26,16 +29,20 @@ import android.webkit.WebView;
 public class BannerAdsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+//    private static final String ARG_PARAM1 = "param1";
+//    private static final String ARG_PARAM2 = "param2";
+//
+//    // TODO: Rename and change types of parameters
+//    private String mParam1;
+//    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
     private WebView contentView;
     private View rootView;
+    private Timer timer = null;
+    private TimerTask timerTask = null;
+    private boolean change = true;
+    private String summary = "";
 
     /**
      * Use this factory method to create a new instance of
@@ -49,8 +56,8 @@ public class BannerAdsFragment extends Fragment {
     public static BannerAdsFragment newInstance(String param1, String param2) {
         BannerAdsFragment fragment = new BannerAdsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,8 +70,8 @@ public class BannerAdsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -135,14 +142,46 @@ public class BannerAdsFragment extends Fragment {
             }
         });
 
-        renderBanner();
+        contentView.post(new Runnable() {
+            @Override
+            public void run() {
+                changeBanner();
+            }
+        });
+
     }
 
-    private void renderBanner(){
-        String summary = "<html><body style=\"display:block;overflow:hidden;margin-top:0px;margin-left:0px;margin-right:0px;max-width:500dp\"><img style=\"display: block;margin-left: auto;margin-right: auto\" src=\"https://cloud.githubusercontent.com/assets/2090635/7781853/fc79a794-00cf-11e5-9cb2-c9063454e076.jpg\" height=\"80dp\" width=\"75%\"></body></html>";
+    // Gets banner from service. This is only a test function and will be modified with a service call.
+    private String getBanner(Boolean test){
+        if(test == true){
+            summary = "https://cloud.githubusercontent.com/assets/2090635/7781853/fc79a794-00cf-11e5-9cb2-c9063454e076.jpg";
+        } else {
+            summary = "http://www.liverpoolcityportal.co.uk/images/banner_example.jpg";
+        }
+        return summary;
+    }
+
+    // Render banner on screen with a webview.
+    private void renderBanner(String imageUrl){
+        summary = "<html><body style=\"display:block;overflow:hidden;margin-top:0px;margin-left:0px;margin-right:0px;max-width:500dp\"><img style=\"display: block;margin-left: auto;margin-right: auto\" src=\""+imageUrl+"\" height=\"80dp\" width=\"75%\"></body></html>";
         contentView.loadData(summary, "text/html", null);
     }
 
-
+    // Fetchs and render a new banner at every 10 seconds.
+    public void changeBanner() {
+        timer = new Timer();
+        timerTask = new TimerTask() {
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        change = !change;
+                        renderBanner(getBanner(change));
+                    }
+                });
+            }
+        };
+        timer.schedule(timerTask, 0, 10000);
+    }
 
 }
