@@ -1,14 +1,20 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="320dp"
-             android:layout_height="60dp"
-             android:background="@color/black_overlay"
+             android:layout_width="match_parent"
+             android:layout_height="80dp"
+             android:background="@android:color/transparent"
              android:layout_gravity="bottom|center_horizontal"
-             tools:context="aloeio.buzapp.app.Fragments.BannerAdsFragment">
-    <ImageSwitcher
+             tools:context="aloeio.buzapp.app.Fragments.BannerAdsFragment"
+             android:layout_marginBottom="10dp">
+    <!--<ImageSwitcher-->
+            <!--android:id="@+id/banner_ads"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent">-->
+    <!--</ImageSwitcher>-->
+    <WebView
             android:id="@+id/banner_ads"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-    </ImageSwitcher>
+            android:layout_height="fill_parent"
+            android:src="@mipmap/background"></WebView>
 
 </FrameLayout>
